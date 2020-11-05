@@ -3,6 +3,7 @@ package shotgun.my.dateutil.inface.impl;
 import shotgun.my.dateutil.inface.TimeUtil;
 import shotgun.my.dateutil.util.DateUtils;
 
+import java.time.Duration;
 import java.time.Instant;
 
 public class InstantTimeUtilImpl implements TimeUtil<Instant> {
@@ -17,7 +18,7 @@ public class InstantTimeUtilImpl implements TimeUtil<Instant> {
     }
 
     @Override
-    public long getTimeMillis(Instant time) {
+    public long getTimeMilli(Instant time) {
         return time.toEpochMilli();
     }
 
@@ -32,7 +33,7 @@ public class InstantTimeUtilImpl implements TimeUtil<Instant> {
     }
 
     @Override
-    public long getDayStartTimeMillis(Instant time) {
+    public long getDayStartTimeMilli(Instant time) {
         return getDayStartTime(time).toEpochMilli();
     }
 
@@ -47,12 +48,22 @@ public class InstantTimeUtilImpl implements TimeUtil<Instant> {
     }
 
     @Override
-    public long getDayEndTimeMillis(Instant time) {
+    public long getDayEndTimeMilli(Instant time) {
         return getDayEndTime(time).toEpochMilli();
     }
 
     @Override
     public long getDayEndTimeSeconds(Instant time) {
         return getDayEndTime(time).getEpochSecond();
+    }
+
+    @Override
+    public Duration diff(Instant time, Instant time2) {
+        return Duration.between(time, time2);
+    }
+
+    @Override
+    public Instant now() {
+        return Instant.now();
     }
 }

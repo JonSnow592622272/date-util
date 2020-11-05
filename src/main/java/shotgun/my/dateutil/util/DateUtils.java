@@ -1,8 +1,9 @@
 package shotgun.my.dateutil.util;
 
-import shotgun.my.dateutil.inface.impl.DtTimeUtilImpl;
+import shotgun.my.dateutil.inface.impl.DateTimeUtilImpl;
 import shotgun.my.dateutil.inface.impl.InstantTimeUtilImpl;
-import shotgun.my.dateutil.inface.impl.LdtTimeUtilImpl;
+import shotgun.my.dateutil.inface.impl.LocalDateTimeTimeUtilImpl;
+import shotgun.my.dateutil.inface.impl.LongTimeUtilImpl;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -30,7 +31,7 @@ public class DateUtils {
     /**
      * LocalDateTime工具
      */
-    public static final LdtTimeUtilImpl LOCAL_DATE_TIME = new LdtTimeUtilImpl();
+    public static final LocalDateTimeTimeUtilImpl LOCAL_DATE_TIME = new LocalDateTimeTimeUtilImpl();
 
     /**
      * Instant工具
@@ -40,7 +41,12 @@ public class DateUtils {
     /**
      * Date工具
      */
-    public static final DtTimeUtilImpl DATE = new DtTimeUtilImpl();
+    public static final DateTimeUtilImpl DATE = new DateTimeUtilImpl();
+
+    /**
+     * 毫秒时间戳工具
+     */
+    public static final LongTimeUtilImpl LONG_MILLI = new LongTimeUtilImpl();
 
 
     public static LocalDateTime fromInstant2LDT(Instant instant) {
@@ -69,6 +75,5 @@ public class DateUtils {
 
 
     //以上方法是LocalDateTime、Instant、Date之间互相转换
-
 
 }

@@ -3,11 +3,12 @@ package shotgun.my.dateutil.inface.impl;
 import shotgun.my.dateutil.inface.TimeUtil;
 import shotgun.my.dateutil.util.DateUtils;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-public class LdtTimeUtilImpl implements TimeUtil<LocalDateTime> {
+public class LocalDateTimeTimeUtilImpl implements TimeUtil<LocalDateTime> {
 
     @Override
     public String format(LocalDateTime time) {
@@ -20,7 +21,7 @@ public class LdtTimeUtilImpl implements TimeUtil<LocalDateTime> {
     }
 
     @Override
-    public long getTimeMillis(LocalDateTime time) {
+    public long getTimeMilli(LocalDateTime time) {
         return DateUtils.fromLDT2Instant(time).toEpochMilli();
     }
 
@@ -36,8 +37,8 @@ public class LdtTimeUtilImpl implements TimeUtil<LocalDateTime> {
     }
 
     @Override
-    public long getDayStartTimeMillis(LocalDateTime time) {
-        return getTimeMillis(getDayStartTime(time));
+    public long getDayStartTimeMilli(LocalDateTime time) {
+        return getTimeMilli(getDayStartTime(time));
     }
 
     @Override
@@ -51,12 +52,22 @@ public class LdtTimeUtilImpl implements TimeUtil<LocalDateTime> {
     }
 
     @Override
-    public long getDayEndTimeMillis(LocalDateTime time) {
-        return getTimeMillis(getDayEndTime(time));
+    public long getDayEndTimeMilli(LocalDateTime time) {
+        return getTimeMilli(getDayEndTime(time));
     }
 
     @Override
     public long getDayEndTimeSeconds(LocalDateTime time) {
         return getTimeSeconds(getDayEndTime(time));
+    }
+
+    @Override
+    public Duration diff(LocalDateTime time, LocalDateTime time2) {
+        return Duration.between(time, time2);
+    }
+
+    @Override
+    public LocalDateTime now() {
+        return LocalDateTime.now();
     }
 }
