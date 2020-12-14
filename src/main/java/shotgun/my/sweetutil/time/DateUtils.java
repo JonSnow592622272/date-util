@@ -1,9 +1,9 @@
-package shotgun.my.sweetutil.util;
+package shotgun.my.sweetutil.time;
 
-import shotgun.my.sweetutil.inface.impl.DateTimeUtilImpl;
-import shotgun.my.sweetutil.inface.impl.InstantTimeUtilImpl;
-import shotgun.my.sweetutil.inface.impl.LocalDateTimeTimeUtilImpl;
-import shotgun.my.sweetutil.inface.impl.LongTimeUtilImpl;
+import shotgun.my.sweetutil.time.impl.DateTimeUtilImpl;
+import shotgun.my.sweetutil.time.impl.InstantTimeUtilImpl;
+import shotgun.my.sweetutil.time.impl.LocalDateTimeTimeUtilImpl;
+import shotgun.my.sweetutil.time.impl.LongTimeUtilImpl;
 
 import java.time.Instant;
 import java.time.LocalDateTime;

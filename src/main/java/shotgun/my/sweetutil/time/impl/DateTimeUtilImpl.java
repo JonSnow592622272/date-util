@@ -1,7 +1,7 @@
-package shotgun.my.sweetutil.inface.impl;
+package shotgun.my.sweetutil.time.impl;
 
-import shotgun.my.sweetutil.inface.TimeUtil;
-import shotgun.my.sweetutil.util.DateUtils;
+import shotgun.my.sweetutil.time.TimeUtil;
+import shotgun.my.sweetutil.time.DateUtils;
 
 import java.time.Duration;
 import java.util.Date;

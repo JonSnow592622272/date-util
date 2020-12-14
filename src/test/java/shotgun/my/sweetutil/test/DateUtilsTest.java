@@ -1,6 +1,6 @@
 package shotgun.my.sweetutil.test;
 
-import shotgun.my.sweetutil.util.DateUtils;
+import shotgun.my.sweetutil.time.DateUtils;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
