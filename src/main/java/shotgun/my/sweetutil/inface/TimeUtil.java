@@ -1,4 +1,4 @@
-package shotgun.my.dateutil.inface;
+package shotgun.my.sweetutil.inface;
 
 import java.time.Duration;
 
