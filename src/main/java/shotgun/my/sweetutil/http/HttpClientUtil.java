@@ -67,7 +67,7 @@ public interface HttpClientUtil {
                 if (StringUtils.isNotEmpty(pTrim)) {
                     int psi = pTrim.indexOf(":");
                     if (psi > 0) {
-                        //只筛选出是请求头的头部信息
+                        //只筛选出是请求头的头部信息，带“:”符号的请求头
                         String headerValue = pTrim.substring(psi + 1);
                         if (headerValue.indexOf("//") == 0) {
                             //防止SoapUI、fiddler复制时带上请求地，如POST http://oa.ytport.com/sys/webservice HTTP/1.1
