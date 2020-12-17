@@ -5,7 +5,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -116,7 +115,12 @@ public interface HttpClientUtil {
     }
 
     default String httpPostForm(String url, Map<String, String> headers, String bodyForm) throws IOException {
-        if (headers != null && !HEADER_VAL_CONTENT_TYPE_FORM.equals(headers.get(HEADER_KEY_CONTENT_TYPE))) {
+
+        if (headers == null) {
+            //设置Content-Type为application/x-www-form-urlencoded
+            headers = new HashMap<>();
+            headers.put(HEADER_KEY_CONTENT_TYPE, HEADER_VAL_CONTENT_TYPE_FORM);
+        } else if (!HEADER_VAL_CONTENT_TYPE_FORM.equals(headers.get(HEADER_KEY_CONTENT_TYPE))) {
             //手动设置Content-Type，进行覆盖为application/x-www-form-urlencoded
             headers.put(HEADER_KEY_CONTENT_TYPE, HEADER_VAL_CONTENT_TYPE_FORM);
         }
@@ -126,7 +130,8 @@ public interface HttpClientUtil {
     default String httpPostJson(String url, Map<String, String> headers, String bodyJson) throws IOException {
         if (headers == null) {
             //设置Content-Type为application/json
-            headers = Collections.singletonMap(HEADER_KEY_CONTENT_TYPE, HEADER_VAL_CONTENT_TYPE_JSON);
+            headers = new HashMap<>();
+            headers.put(HEADER_KEY_CONTENT_TYPE, HEADER_VAL_CONTENT_TYPE_JSON);
         } else if (!HEADER_VAL_CONTENT_TYPE_JSON.equals(headers.get(HEADER_KEY_CONTENT_TYPE))) {
             //手动设置Content-Type，进行覆盖为application/json
             headers.put(HEADER_KEY_CONTENT_TYPE, HEADER_VAL_CONTENT_TYPE_JSON);
