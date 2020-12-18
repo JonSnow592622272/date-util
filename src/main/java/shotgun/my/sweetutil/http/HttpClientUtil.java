@@ -1,11 +1,18 @@
 package shotgun.my.sweetutil.http;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.message.BasicNameValuePair;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public interface HttpClientUtil {
@@ -216,9 +223,21 @@ public interface HttpClientUtil {
         map.put("bb", "李四");
         map.put("cc", "王五");
 
-        System.out.println(buildFormString(map));
+//        System.out.println(buildFormString(map));
+//
+//        System.out.println(buildGetUrl("http://www.baidu.com/?wahaha=111", map));
 
-        System.out.println(buildGetUrl("http://www.baidu.com/?wahaha=111", map));
+        List<NameValuePair> nvps = new ArrayList<>();
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            nvps.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
+        }
+
+        UrlEncodedFormEntity urlEncodedFormEntity = new UrlEncodedFormEntity(nvps, "UTF-8");
+
+        System.out.println(urlEncodedFormEntity.toString());
+        BufferedReader br=new BufferedReader(new InputStreamReader(urlEncodedFormEntity.getContent()));
+        System.out.println(br.readLine());
+
 
     }
 
