@@ -1,13 +1,12 @@
 package shotgun.my.sweetutil.http;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.client.utils.URIBuilder;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public interface HttpClientUtil {
     String UTF8 = "UTF-8";
@@ -41,7 +40,6 @@ public interface HttpClientUtil {
     default String execute(String method, String url) throws IOException {
         return execute(method, url, (Map<String, String>) null, null);
     }
-
 
     /**
      * 默认Content-Type:application/x-www-form-urlencoded
@@ -97,40 +95,50 @@ public interface HttpClientUtil {
      **/
     String execute(String method, String url, Map<String, String> headers, String body) throws IOException;
 
+
     default String httpGet(String url) throws IOException {
         return execute(GET, url);
     }
 
+    default String httpGet(String url, Map<String, String> headers,
+            Map<String, String> paramsMap) throws IOException, URISyntaxException {
+        return execute(GET, buildGetUrl(url, paramsMap), headers, null);
+    }
+
+    default String httpGet(String url, Map<String, String> paramsMap) throws IOException, URISyntaxException {
+        return httpGet(url, null, paramsMap);
+    }
+
     default String httpPostForm(String url, Map<String, String> headers,
-            Map<String, String> bodyForm) throws IOException {
+            Map<String, String> paramsMap) throws IOException {
         String bodyStr;
-        if (bodyForm == null || bodyForm.isEmpty()) {
+        if (paramsMap == null || paramsMap.isEmpty()) {
             bodyStr = null;
         } else {
             //构建form表单传递字符串
-            bodyStr = buildFormString(bodyForm);
+            bodyStr = buildFormString(paramsMap);
         }
 
         return httpPostForm(url, headers, bodyStr);
     }
 
-    default String httpPostForm(String url, Map<String, String> headers, String bodyForm) throws IOException {
+    default String httpPostForm(String url, Map<String, String> headers, String body) throws IOException {
 
         if (headers == null) {
             //设置Content-Type为application/x-www-form-urlencoded
-            headers = new HashMap<>();
+            headers = new HashMap<>(1);
             headers.put(HEADER_KEY_CONTENT_TYPE, HEADER_VAL_CONTENT_TYPE_FORM);
         } else if (!HEADER_VAL_CONTENT_TYPE_FORM.equals(headers.get(HEADER_KEY_CONTENT_TYPE))) {
             //手动设置Content-Type，进行覆盖为application/x-www-form-urlencoded
             headers.put(HEADER_KEY_CONTENT_TYPE, HEADER_VAL_CONTENT_TYPE_FORM);
         }
-        return execute(POST, url, headers, bodyForm);
+        return execute(POST, url, headers, body);
     }
 
     default String httpPostJson(String url, Map<String, String> headers, String bodyJson) throws IOException {
         if (headers == null) {
             //设置Content-Type为application/json
-            headers = new HashMap<>();
+            headers = new HashMap<>(1);
             headers.put(HEADER_KEY_CONTENT_TYPE, HEADER_VAL_CONTENT_TYPE_JSON);
         } else if (!HEADER_VAL_CONTENT_TYPE_JSON.equals(headers.get(HEADER_KEY_CONTENT_TYPE))) {
             //手动设置Content-Type，进行覆盖为application/json
@@ -141,39 +149,76 @@ public interface HttpClientUtil {
     }
 
 
+//    public static String buildFormString3(Map<String, String> paramsMap) throws
+//    UnsupportedEncodingException {
+//
+//        StringBuilder sb = new StringBuilder();
+//        Set<Map.Entry<String, String>> entries = paramsMap.entrySet();
+//        boolean isFirst = true;
+//        for (Map.Entry<String, String> en : entries) {
+//            if (isFirst) {
+//                isFirst = false;
+//            } else {
+//                sb.append("&");
+//            }
+//            sb.append(URLEncoder.encode(en.getKey(), UTF8)).append("=")
+//                    .append(URLEncoder.encode(en.getValue(), UTF8));
+//        }
+//        return sb.toString();
+//    }
+
+
+    /**
+     * 构建get url
+     *
+     * @param url       url
+     * @param paramsMap 参数
+     * @return url结果
+     **/
+    public static String buildGetUrl(String url, Map<String, String> paramsMap) throws URISyntaxException {
+        if (url == null || url.isEmpty()) {
+            throw new IllegalArgumentException("url不能为空!");
+        }
+
+        if (paramsMap == null || paramsMap.isEmpty()) {
+            return url;
+        }
+        URIBuilder builder = new URIBuilder(url);
+
+        for (Map.Entry<String, String> entry : paramsMap.entrySet()) {
+            builder.setParameter(entry.getKey(), entry.getValue());
+        }
+        return builder.toString();
+    }
+
     /**
      * 构建form表单传递字符串
      * 例如：aa=%E5%BC%A0%E4%B8%89&bb=%E6%9D%8E%E5%9B%9B&cc=%E7%8E%8B%E4%BA%94
      *
-     * @param bodyForm 表单参数
+     * @param paramsMap 表单参数
      * @return 表单传递字符串
      **/
-    public static String buildFormString(Map<String, String> bodyForm) throws UnsupportedEncodingException {
-
-        StringBuilder sb = new StringBuilder();
-        Set<Map.Entry<String, String>> entries = bodyForm.entrySet();
-        boolean isFirst = true;
-        for (Map.Entry<String, String> en : entries) {
-            if (isFirst) {
-                isFirst = false;
-            } else {
-                sb.append("&");
-            }
-            sb.append(URLEncoder.encode(en.getKey(), UTF8)).append("=")
-                    .append(URLEncoder.encode(en.getValue(), UTF8));
+    public static String buildFormString(Map<String, String> paramsMap) {
+        if (paramsMap == null || paramsMap.isEmpty()) {
+            return null;
         }
-        return sb.toString();
+        URIBuilder builder = new URIBuilder();
+        for (Map.Entry<String, String> entry : paramsMap.entrySet()) {
+            builder.setParameter(entry.getKey(), entry.getValue());
+        }
+        //首个字符串是“?”，过滤掉“?”
+        return builder.toString().substring(1);
     }
 
-    public static void main(String[] args) throws UnsupportedEncodingException {
+    public static void main(String[] args) throws Exception {
         Map<String, String> map = new HashMap<>();
         map.put("aa", "张三");
         map.put("bb", "李四");
-        map.put("cc王五", "王五");
+        map.put("cc", "王五");
 
-        String s = buildFormString(map);
+        System.out.println(buildFormString(map));
 
-        System.out.println(s);
+        System.out.println(buildGetUrl("http://www.baidu.com/?wahaha=111", map));
 
     }
 
