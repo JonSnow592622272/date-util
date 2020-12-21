@@ -5,6 +5,10 @@ import shotgun.my.sweetutil.http.impl.OkHttpClientUtilImpl;
 
 import java.io.IOException;
 
+/**
+ *
+ * @author wulm
+ **/
 public class HttpUtils {
     /**
      * LocalDateTime工具
