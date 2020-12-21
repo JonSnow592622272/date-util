@@ -1,18 +1,11 @@
 package shotgun.my.sweetutil.http;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.message.BasicNameValuePair;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -49,6 +42,11 @@ public interface HttpClientUtil {
     String HEADER_VAL_CONTENT_TYPE_FORM = "application/x-www-form-urlencoded";
     String HEADER_VAL_CONTENT_TYPE_JSON = "application/json";
 
+    /**
+     * @param method get、post...
+     * @param url    (必填)url
+     * @return 返回结果
+     **/
     default String execute(String method, String url) throws IOException {
         return execute(method, url, (Map<String, String>) null, null);
     }
@@ -108,19 +106,48 @@ public interface HttpClientUtil {
     String execute(String method, String url, Map<String, String> headers, String body) throws IOException;
 
 
+    /**
+     * get请求
+     *
+     * @param url (必填)url
+     * @return 返回结果
+     **/
     default String httpGet(String url) throws IOException {
         return execute(GET, url);
     }
 
+    /**
+     * get请求
+     *
+     * @param url       (必填)url
+     * @param headers   (非必填)请求头
+     * @param paramsMap (非必填)get传递参数
+     * @return 返回结果
+     **/
     default String httpGet(String url, Map<String, String> headers,
             Map<String, String> paramsMap) throws IOException, URISyntaxException {
         return execute(GET, buildGetUrl(url, paramsMap), headers, null);
     }
 
+    /**
+     * get请求
+     *
+     * @param url       (必填)url
+     * @param paramsMap (非必填)get传递参数
+     * @return 返回结果
+     **/
     default String httpGet(String url, Map<String, String> paramsMap) throws IOException, URISyntaxException {
         return httpGet(url, null, paramsMap);
     }
 
+    /**
+     * form表单提交(application/x-www-form-urlencoded)
+     *
+     * @param url       (必填)url
+     * @param headers   (非必填)请求头
+     * @param paramsMap (非必填)传递参数
+     * @return 返回结果
+     **/
     default String httpPostForm(String url, Map<String, String> headers,
             Map<String, String> paramsMap) throws IOException {
         String bodyStr;
@@ -134,6 +161,14 @@ public interface HttpClientUtil {
         return httpPostForm(url, headers, bodyStr);
     }
 
+    /**
+     * form表单提交(application/x-www-form-urlencoded)
+     *
+     * @param url     (必填)url
+     * @param headers (非必填)请求头
+     * @param body    (非必填)传递参数,例如：aa=%E5%BC%A0%E4%B8%89&bb=%E6%9D%8E%E5%9B%9B&cc=%E7%8E%8B%E4%BA%94
+     * @return 返回结果
+     **/
     default String httpPostForm(String url, Map<String, String> headers, String body) throws IOException {
 
         if (headers == null) {
@@ -147,6 +182,14 @@ public interface HttpClientUtil {
         return execute(POST, url, headers, body);
     }
 
+    /**
+     * rest接口请求，提交json数据(application/json)
+     *
+     * @param url      (必填)url
+     * @param headers  (非必填)请求头
+     * @param bodyJson (非必填)传递json
+     * @return 返回结果
+     **/
     default String httpPostJson(String url, Map<String, String> headers, String bodyJson) throws IOException {
         if (headers == null) {
             //设置Content-Type为application/json
@@ -159,25 +202,6 @@ public interface HttpClientUtil {
 
         return execute(POST, url, headers, bodyJson);
     }
-
-
-//    public static String buildFormString3(Map<String, String> paramsMap) throws
-//    UnsupportedEncodingException {
-//
-//        StringBuilder sb = new StringBuilder();
-//        Set<Map.Entry<String, String>> entries = paramsMap.entrySet();
-//        boolean isFirst = true;
-//        for (Map.Entry<String, String> en : entries) {
-//            if (isFirst) {
-//                isFirst = false;
-//            } else {
-//                sb.append("&");
-//            }
-//            sb.append(URLEncoder.encode(en.getKey(), UTF8)).append("=")
-//                    .append(URLEncoder.encode(en.getValue(), UTF8));
-//        }
-//        return sb.toString();
-//    }
 
 
     /**
@@ -228,20 +252,9 @@ public interface HttpClientUtil {
         map.put("bb", "李四");
         map.put("cc", "王五");
 
-//        System.out.println(buildFormString(map));
-//
-//        System.out.println(buildGetUrl("http://www.baidu.com/?wahaha=111", map));
+        System.out.println(buildFormString(map));
 
-        List<NameValuePair> nvps = new ArrayList<>();
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            nvps.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
-        }
-
-        UrlEncodedFormEntity urlEncodedFormEntity = new UrlEncodedFormEntity(nvps, "UTF-8");
-
-        System.out.println(urlEncodedFormEntity.toString());
-        BufferedReader br = new BufferedReader(new InputStreamReader(urlEncodedFormEntity.getContent()));
-        System.out.println(br.readLine());
+        System.out.println(buildGetUrl("http://www.baidu.com/?wahaha=111", map));
 
 
     }
