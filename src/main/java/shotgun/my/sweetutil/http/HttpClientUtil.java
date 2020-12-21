@@ -15,6 +15,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * http接口
+ *
+ * @author wulm
+ **/
 public interface HttpClientUtil {
     String UTF8 = "UTF-8";
 
@@ -235,7 +240,7 @@ public interface HttpClientUtil {
         UrlEncodedFormEntity urlEncodedFormEntity = new UrlEncodedFormEntity(nvps, "UTF-8");
 
         System.out.println(urlEncodedFormEntity.toString());
-        BufferedReader br=new BufferedReader(new InputStreamReader(urlEncodedFormEntity.getContent()));
+        BufferedReader br = new BufferedReader(new InputStreamReader(urlEncodedFormEntity.getContent()));
         System.out.println(br.readLine());
 
 
