@@ -94,10 +94,10 @@ public interface HttpClientUtil {
      * 默认Content-Type:application/x-www-form-urlencoded
      * 如遇到“&#xxx;”字符编码，可使用StringEscapeUtils.unescapeHtml进行解码
      *
-     * @param method  请求方法，get、post、put等
-     * @param url     url
-     * @param headers 多个请求头(非必填)
-     * @param body    请求体(非必填)，get请求不会传递body
+     * @param method  (必填)请求方法，get、post、put等
+     * @param url     (必填)url
+     * @param headers (非必填)多个请求头
+     * @param body    (非必填)请求体，get请求不会传递body
      * @return 返回结果
      **/
     String execute(String method, String url, Map<String, String> headers, String body) throws IOException;
