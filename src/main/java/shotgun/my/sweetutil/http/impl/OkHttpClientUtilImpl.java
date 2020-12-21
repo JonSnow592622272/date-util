@@ -22,9 +22,14 @@ import java.util.concurrent.TimeUnit;
 
 public class OkHttpClientUtilImpl implements HttpClientUtil {
 
+    public static final OkHttpClient CLIENT_DEFAULT = new OkHttpClient.Builder()
+            .addInterceptor(new BridgeInterceptor(CookieJar.NO_COOKIES))
+            .connectTimeout(HttpConfig.HTTP_CONFIG_DEFAULT.getConnectTimeout(), TimeUnit.SECONDS)
+            .readTimeout(HttpConfig.HTTP_CONFIG_DEFAULT.getReadTimeout(), TimeUnit.SECONDS).build();
+
     @Override
-    public String execute(String method, String url, Map<String, String> headers,
-            String body) throws IOException {
+    public String execute(String method, String url, Map<String, String> headers, String body,
+            HttpConfig httpConfig) throws IOException {
         if (StringUtils.isEmpty(method)) {
             throw new IllegalArgumentException("method不能为空!");
         }
@@ -67,10 +72,15 @@ public class OkHttpClientUtilImpl implements HttpClientUtil {
         headers.remove(HEADER_KEY_RANGE);
 
         //创建okHttpClient对象
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .addInterceptor(new BridgeInterceptor(CookieJar.NO_COOKIES))
-                .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS).readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
-                .build();
+        OkHttpClient okHttpClient;
+        if (httpConfig == null || httpConfig == HttpConfig.HTTP_CONFIG_DEFAULT) {
+            okHttpClient = CLIENT_DEFAULT;
+        } else {
+            okHttpClient = new OkHttpClient.Builder()
+                    .addInterceptor(new BridgeInterceptor(CookieJar.NO_COOKIES))
+                    .connectTimeout(httpConfig.getConnectTimeout(), TimeUnit.SECONDS)
+                    .readTimeout(httpConfig.getReadTimeout(), TimeUnit.SECONDS).build();
+        }
 
 
         // 构造Request

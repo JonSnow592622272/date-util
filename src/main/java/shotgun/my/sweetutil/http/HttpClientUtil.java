@@ -20,16 +20,6 @@ public interface HttpClientUtil {
     String POST = "POST";
 
     /**
-     * 默认连接超时时间(秒)
-     */
-    int CONNECT_TIMEOUT = 600;
-
-    /**
-     * 默认读取超时时间(秒)
-     */
-    int READ_TIMEOUT = 600;
-
-    /**
      * 头部信息
      */
     String HEADER_KEY_CONTENT_TYPE = "Content-Type";
@@ -43,12 +33,16 @@ public interface HttpClientUtil {
     String HEADER_VAL_CONTENT_TYPE_JSON = "application/json";
 
     /**
-     * @param method get、post...
+     * @param method (必填) get、post...
      * @param url    (必填)url
      * @return 返回结果
      **/
     default String execute(String method, String url) throws IOException {
-        return execute(method, url, (Map<String, String>) null, null);
+        return execute(method, url, HttpConfig.HTTP_CONFIG_DEFAULT);
+    }
+
+    default String execute(String method, String url, HttpConfig httpConfig) throws IOException {
+        return execute(method, url, (Map<String, String>) null, null, httpConfig);
     }
 
     /**
@@ -62,6 +56,11 @@ public interface HttpClientUtil {
      * @return 返回结果
      **/
     default String execute(String method, String url, String headers, String body) throws IOException {
+        return execute(method, url, headers, body, HttpConfig.HTTP_CONFIG_DEFAULT);
+    }
+
+    default String execute(String method, String url, String headers, String body,
+            HttpConfig httpConfig) throws IOException {
         Map<String, String> headersMap;
 
         if (StringUtils.isEmpty(headers)) {
@@ -87,13 +86,11 @@ public interface HttpClientUtil {
             }
         }
 
-        return execute(method, url, headersMap, body);
+        return execute(method, url, headersMap, body, httpConfig);
     }
 
 
     /**
-     * 所有请求统一入口
-     * <p>
      * 默认Content-Type:application/x-www-form-urlencoded
      * 如遇到“&#xxx;”字符编码，可使用StringEscapeUtils.unescapeHtml进行解码
      *
@@ -103,8 +100,26 @@ public interface HttpClientUtil {
      * @param body    (非必填)请求体，get请求不会传递body
      * @return 返回结果
      **/
-    String execute(String method, String url, Map<String, String> headers, String body) throws IOException;
+    default String execute(String method, String url, Map<String, String> headers,
+            String body) throws IOException {
+        return execute(method, url, headers, body, HttpConfig.HTTP_CONFIG_DEFAULT);
+    }
 
+    /**
+     * 所有请求统一入口
+     * <p>
+     * 默认Content-Type:application/x-www-form-urlencoded
+     * 如遇到“&#xxx;”字符编码，可使用StringEscapeUtils.unescapeHtml进行解码
+     *
+     * @param method     (必填)请求方法，get、post、put等
+     * @param url        (必填)url
+     * @param headers    (非必填)多个请求头
+     * @param body       (非必填)请求体，get请求不会传递body
+     * @param httpConfig (非必填)http配置，不传则使用默认 {@link HttpConfig#HTTP_CONFIG_DEFAULT}
+     * @return 返回结果
+     **/
+    String execute(String method, String url, Map<String, String> headers, String body,
+            HttpConfig httpConfig) throws IOException;
 
     /**
      * get请求
@@ -244,6 +259,46 @@ public interface HttpClientUtil {
         }
         //首个字符串是“?”，过滤掉“?”
         return builder.toString().substring(1);
+    }
+
+
+    class HttpConfig {
+        /**
+         * 默认配置
+         */
+        public static final HttpConfig HTTP_CONFIG_DEFAULT = new HttpConfig();
+
+        static {
+            HTTP_CONFIG_DEFAULT.setConnectTimeout(600);
+            HTTP_CONFIG_DEFAULT.setReadTimeout(600);
+        }
+
+
+        /**
+         * 连接超时时间(秒)
+         */
+        private int connectTimeout;
+        /**
+         * 读取超时时间(秒)
+         */
+        private int readTimeout;
+
+
+        public int getConnectTimeout() {
+            return connectTimeout;
+        }
+
+        public void setConnectTimeout(int connectTimeout) {
+            this.connectTimeout = connectTimeout;
+        }
+
+        public int getReadTimeout() {
+            return readTimeout;
+        }
+
+        public void setReadTimeout(int readTimeout) {
+            this.readTimeout = readTimeout;
+        }
     }
 
     public static void main(String[] args) throws Exception {
