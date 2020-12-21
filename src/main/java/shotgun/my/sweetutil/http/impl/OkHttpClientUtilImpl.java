@@ -20,6 +20,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+/**
+ *
+ * @author wulm
+ **/
 public class OkHttpClientUtilImpl implements HttpClientUtil {
 
     public static final OkHttpClient CLIENT_DEFAULT = new OkHttpClient.Builder()
