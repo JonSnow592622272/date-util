@@ -18,8 +18,9 @@ public class GouFangJiangLiTest {
                 }, () -> {
                     System.out.println("娃哈哈222");
                 }
-
         );
+
+        System.out.println("end...");
     }
 
     public static void asaynRun(long intervalMillis, Runnable... runnables) throws InterruptedException {
