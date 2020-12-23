@@ -45,7 +45,8 @@ public class GouFangJiangLiTest {
 //        reqs.add(new DateSelect("99", "460"));
 //        reqs.add(new DateSelect("100", "460"));
 //        reqs.add(new DateSelect("101", "460"));
-        reqs.add(new DateSelect("94", "432"));
+        //抢0106第6组
+        reqs.add(new DateSelect("101", "474"));
 
 
         asaynRun(reqs.parallelStream().map(dateSelect -> () -> {
