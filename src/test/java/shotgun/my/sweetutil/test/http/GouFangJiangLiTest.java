@@ -55,7 +55,7 @@ public class GouFangJiangLiTest {
             paramMap.put("timerange", dateSelect.getTimerange());
             try {
                 String body = HttpClientUtil.buildFormString(paramMap);
-                System.out.println(body);
+//                System.out.println(body);
                 String result = HttpClientUtils.HTTP_CLIENT_OK.execute("post",
                         "https://yuyue.csdfa.cn//addons/yb_yuyue/index.php?s=api/user/subscribe",
                         "User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like " +
@@ -66,7 +66,7 @@ public class GouFangJiangLiTest {
             } catch (Exception e) {
                 System.out.println("请求异常:" + e.getMessage());
             }
-        }), 30000);
+        }), 3000);
 
     }
 
