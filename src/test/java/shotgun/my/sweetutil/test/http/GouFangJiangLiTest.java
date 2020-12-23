@@ -1,5 +1,6 @@
 package shotgun.my.sweetutil.test.http;
 
+import org.apache.commons.text.StringEscapeUtils;
 import shotgun.my.sweetutil.http.HttpClientUtil;
 import shotgun.my.sweetutil.http.HttpClientUtils;
 
@@ -63,7 +64,7 @@ public class GouFangJiangLiTest {
                                 "Gecko) Chrome/53.0.2785.143 Safari/537.36 MicroMessenger/7.0.9.501 " +
                                 "NetType/WIFI MiniProgramEnv/Windows WindowsWechat",
                         body);
-                System.out.println("请求结果:" + result);
+                System.out.println("请求结果:" + StringEscapeUtils.unescapeJava(result));
             } catch (Exception e) {
                 System.out.println("请求异常:" + e.getMessage());
             }
@@ -92,6 +93,37 @@ public class GouFangJiangLiTest {
 
     }
 
+
+    /**
+     * 字符串转unicode
+     *
+     * @param str
+     * @return
+     */
+    public static String stringToUnicode(String str) {
+        StringBuffer sb = new StringBuffer();
+        char[] c = str.toCharArray();
+        for (int i = 0; i < c.length; i++) {
+            sb.append("\\u" + Integer.toHexString(c[i]));
+        }
+        return sb.toString();
+    }
+
+    /**
+     * unicode转字符串
+     *
+     * @param unicode
+     * @return
+     */
+    public static String unicodeToString(String unicode) {
+        StringBuffer sb = new StringBuffer();
+        String[] hex = unicode.split("\\\\u");
+        for (int i = 1; i < hex.length; i++) {
+            int index = Integer.parseInt(hex[i], 16);
+            sb.append((char) index);
+        }
+        return sb.toString();
+    }
 
     public static class DateSelect {
         private String formId;
