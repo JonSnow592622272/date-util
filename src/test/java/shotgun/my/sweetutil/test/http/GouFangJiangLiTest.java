@@ -27,9 +27,9 @@ public class GouFangJiangLiTest {
 
         Map<String, String> headerMap = new HashMap<>();
         headerMap.put("User-Agent",
-                "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53" +
-                        ".0" + ".2785.143 Safari/537.36 MicroMessenger/7.0.9.501 NetType/WIFI " +
-                        "MiniProgramEnv/Windows WindowsWechat");
+                "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53" + ".0" +
+                        ".2785.143 Safari/537.36 MicroMessenger/7.0.9.501 NetType/WIFI " + "MiniProgramEnv/Windows " +
+                        "WindowsWechat");
         headerMap.put("client", "XCX");
 
         Map<String, String> baseParamMap = new LinkedHashMap<>();
@@ -60,15 +60,17 @@ public class GouFangJiangLiTest {
             try {
                 String body = HttpClientUtil.buildFormString(paramMap);
 //                System.out.println(body);
-                String resultSec = HttpClientUtils.HTTP_CLIENT_OK.execute("post",
-                        "https://yuyue.csdfa.cn//addons/yb_yuyue/index.php?s=api/user/subscribe",
-                        "User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like " + "Gecko) Chrome/53.0.2785.143 Safari/537.36 MicroMessenger/7.0.9.501 " + "NetType/WIFI MiniProgramEnv/Windows WindowsWechat",
-                        body);
+                String resultSec = HttpClientUtils.HTTP_CLIENT_OK
+                        .execute("post", "https://yuyue.csdfa.cn//addons/yb_yuyue/index.php?s=api/user/subscribe",
+                                "User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like " +
+                                        "Gecko) Chrome/53.0.2785.143 Safari/537.36 MicroMessenger/7.0.9.501 " +
+                                        "NetType/WIFI MiniProgramEnv/Windows WindowsWechat",
+                                body);
                 String result = StringEscapeUtils.unescapeJava(resultSec);
                 if (!concurrentHashMap.containsKey(result)) {
                     System.out.println("请求结果:" + result);
                     concurrentHashMap.put(result, "");
-                }else{
+                } else {
 //                    System.out.println("重复请求结果:" + result);
                 }
             } catch (Exception e) {
@@ -87,11 +89,11 @@ public class GouFangJiangLiTest {
             while (true) {
                 for (Runnable runnable : collect) {
                     pool.execute(runnable);
-                }
-                try {
-                    Thread.sleep(intervalMillis);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    try {
+                        Thread.sleep(intervalMillis);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
