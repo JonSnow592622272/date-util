@@ -21,7 +21,7 @@ import java.util.stream.Stream;
  **/
 public class GouFangJiangLiTest {
 
-    public static ExecutorService pool = Executors.newFixedThreadPool(16);
+    public static ExecutorService pool = Executors.newCachedThreadPool();
 
     public static void main(String[] args) throws InterruptedException {
 
