@@ -64,7 +64,7 @@ public class GouFangJiangLiTest {
                         body);
                 System.out.println("请求结果:" + result);
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("请求异常:" + e.getMessage());
             }
         }), 30000);
 
