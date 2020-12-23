@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -49,6 +50,7 @@ public class GouFangJiangLiTest {
         //抢0106第6组
         reqs.add(new DateSelect("101", "474"));
 
+        Map<String, String> concurrentHashMap = new ConcurrentHashMap<>();
 
         asaynRun(reqs.parallelStream().map(dateSelect -> () -> {
             Map<String, String> paramMap = new LinkedHashMap<>(baseParamMap);
@@ -58,15 +60,19 @@ public class GouFangJiangLiTest {
             try {
                 String body = HttpClientUtil.buildFormString(paramMap);
 //                System.out.println(body);
-                String result = HttpClientUtils.HTTP_CLIENT_OK.execute("post",
+                String resultSec = HttpClientUtils.HTTP_CLIENT_OK.execute("post",
                         "https://yuyue.csdfa.cn//addons/yb_yuyue/index.php?s=api/user/subscribe",
-                        "User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like " +
-                                "Gecko) Chrome/53.0.2785.143 Safari/537.36 MicroMessenger/7.0.9.501 " +
-                                "NetType/WIFI MiniProgramEnv/Windows WindowsWechat",
+                        "User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like " + "Gecko) Chrome/53.0.2785.143 Safari/537.36 MicroMessenger/7.0.9.501 " + "NetType/WIFI MiniProgramEnv/Windows WindowsWechat",
                         body);
-                System.out.println("请求结果:" + StringEscapeUtils.unescapeJava(result));
+                String result = StringEscapeUtils.unescapeJava(resultSec);
+                if (!concurrentHashMap.containsKey(result)) {
+                    System.out.println("请求结果:" + result);
+                    concurrentHashMap.put(result, "");
+                }else{
+//                    System.out.println("重复请求结果:" + result);
+                }
             } catch (Exception e) {
-                System.out.println("请求异常:" + e.getMessage());
+                e.printStackTrace();
             }
         }), 3000);
 
