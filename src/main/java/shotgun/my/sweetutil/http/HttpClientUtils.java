@@ -9,7 +9,7 @@ import java.io.IOException;
  *
  * @author wulm
  **/
-public class HttpUtils {
+public class HttpClientUtils {
     /**
      * LocalDateTime工具
      */
@@ -29,7 +29,7 @@ public class HttpUtils {
         String body = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" " +
                 "xmlns:urn=\"urn:DefaultNamespace\">\n" + "   <soapenv:Header/>\n" + "   <soapenv:Body>\n" + "      <urn:rescon>dept</urn:rescon>\n" + "   </soapenv:Body>\n" + "</soapenv:Envelope>";
 
-        String post = HttpUtils.HTTP_CLIENT_OK
+        String post = HttpClientUtils.HTTP_CLIENT_OK
                 .execute("post", "http://mobile.guangri.net:8082/oa/oa_ehr.nsf/getehrdatanow?OpenWebService",
                         headers, body);
 
