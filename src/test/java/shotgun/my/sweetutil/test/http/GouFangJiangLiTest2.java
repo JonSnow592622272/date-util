@@ -20,7 +20,7 @@ import java.util.stream.Stream;
 /**
  * 契税奖励请求
  **/
-public class GouFangJiangLiTest {
+public class GouFangJiangLiTest2 {
 
     public static ExecutorService pool = Executors.newCachedThreadPool();
 
