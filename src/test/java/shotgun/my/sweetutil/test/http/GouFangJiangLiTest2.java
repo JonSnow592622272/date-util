@@ -34,33 +34,30 @@ public class GouFangJiangLiTest2 {
         headerMap.put("client", "XCX");
 
         Map<String, String> baseParamMap = new LinkedHashMap<>();
-        baseParamMap.put("laifang", "343106200800049");//343106201000029
-        baseParamMap.put("name", "李超");
-        baseParamMap.put("idcard", "432826198910233010");
+        baseParamMap.put("laifang", "343106200800070");//343106201000029
+        baseParamMap.put("name", "邝杨波");
+        baseParamMap.put("idcard", "431021199307117515");
 
         //公共配置
         baseParamMap.put("department", "1");
         baseParamMap.put("events", "1");
-        baseParamMap.put("utoken", "oodke5K_jCvi93ecEFuhmNiV_N9s");
+        baseParamMap.put("utoken", "oodke5IBJEGYQAONs60z3ys2ISOU");
         baseParamMap.put("uniacid", "263");
 
         List<DateSelect> reqs = new ArrayList<>();
-//        reqs.add(new DateSelect("99", "460"));
-//        reqs.add(new DateSelect("100", "460"));
-//        reqs.add(new DateSelect("101", "460"));
-        //抢0106第6组
-        reqs.add(new DateSelect("101", "474"));
-
-        reqs.add(new DateSelect("89", "399"));
-        reqs.add(new DateSelect("89", "402"));
 
 
-        reqs.add(new DateSelect("102","475"));
-        reqs.add(new DateSelect("102","477"));
-        reqs.add(new DateSelect("102","479"));
+        //抢0108
         reqs.add(new DateSelect("103","481"));
         reqs.add(new DateSelect("103","483"));
         reqs.add(new DateSelect("103","485"));
+        reqs.add(new DateSelect("103","486"));
+        //抢0111
+        reqs.add(new DateSelect("106","499"));
+        reqs.add(new DateSelect("106","503"));
+        //抢0108
+        reqs.add(new DateSelect("107","505"));
+        reqs.add(new DateSelect("107","509"));
 
 
 
@@ -90,7 +87,7 @@ public class GouFangJiangLiTest2 {
                 System.out.println("请求异常,msg=" + e.getMessage());
 //                e.printStackTrace();
             }
-        }), 500);
+        }), 2000);
 
     }
 

@@ -45,22 +45,20 @@ public class GouFangJiangLiTest {
         baseParamMap.put("uniacid", "263");
 
         List<DateSelect> reqs = new ArrayList<>();
-//        reqs.add(new DateSelect("99", "460"));
-//        reqs.add(new DateSelect("100", "460"));
-//        reqs.add(new DateSelect("101", "460"));
-        //抢0106第6组
-        reqs.add(new DateSelect("101", "474"));
-
-        reqs.add(new DateSelect("89", "399"));
-        reqs.add(new DateSelect("89", "402"));
 
 
-        reqs.add(new DateSelect("102","475"));
-        reqs.add(new DateSelect("102","477"));
-        reqs.add(new DateSelect("102","479"));
+        //抢0108
         reqs.add(new DateSelect("103","481"));
         reqs.add(new DateSelect("103","483"));
         reqs.add(new DateSelect("103","485"));
+        reqs.add(new DateSelect("103","486"));
+
+        //抢0111
+        reqs.add(new DateSelect("106","499"));
+        reqs.add(new DateSelect("106","503"));
+        //抢0108
+        reqs.add(new DateSelect("107","505"));
+        reqs.add(new DateSelect("107","509"));
 
 
 
@@ -90,7 +88,7 @@ public class GouFangJiangLiTest {
                 System.out.println("请求异常,msg=" + e.getMessage());
 //                e.printStackTrace();
             }
-        }), 500);
+        }), 2000);
 
     }
 
