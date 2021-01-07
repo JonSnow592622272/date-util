@@ -1,7 +1,7 @@
 package shotgun.my.sweetutil.time.impl;
 
-import shotgun.my.sweetutil.time.TimeUtil;
 import shotgun.my.sweetutil.time.DateUtils;
+import shotgun.my.sweetutil.time.TimeUtil;
 
 import java.time.Duration;
 import java.time.LocalDateTime;

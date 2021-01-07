@@ -1,7 +1,7 @@
 package shotgun.my.sweetutil.time.impl;
 
-import shotgun.my.sweetutil.time.TimeUtil;
 import shotgun.my.sweetutil.time.DateUtils;
+import shotgun.my.sweetutil.time.TimeUtil;
 
 import java.time.Duration;
 import java.util.Date;
@@ -30,7 +30,8 @@ public class DateTimeUtilImpl implements TimeUtil<Date> {
 
     @Override
     public Date getDayStartTime(Date time) {
-        return DateUtils.fromLDT2Date(DateUtils.LOCAL_DATE_TIME.getDayStartTime(DateUtils.fromDate2LDT(time)));
+        return DateUtils
+                .fromLDT2Date(DateUtils.LOCAL_DATE_TIME.getDayStartTime(DateUtils.fromDate2LDT(time)));
     }
 
     @Override
